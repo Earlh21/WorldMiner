@@ -6,10 +6,17 @@
         <!--Avalonia doesen't support TrimMode=link currently,but we are working on that https://github.com/AvaloniaUI/Avalonia/issues/6892 -->
         <TrimMode>copyused</TrimMode>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+        <ApplicationIcon>Assets\worldminer_icon.ico</ApplicationIcon>
     </PropertyGroup>
+
+    <PropertyGroup>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+    </PropertyGroup>
+    
     <ItemGroup>
         <None Remove=".gitignore" />
     </ItemGroup>
+    
     <ItemGroup>
         <!--This helps with theme dll-s trimming.
         If you will publish your application in self-contained mode with p:PublishTrimmed=true and it will use Fluent theme Default theme will be trimmed from the output and vice versa.
