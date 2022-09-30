@@ -1,0 +1,117 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WorldMiner.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpf="clr-namespace:Material.Styles.Assists;assembly=Material.Styles"
+        xmlns:viewModels="clr-namespace:WorldMiner.ViewModels"
+        mc:Ignorable="d"
+        Width="700"
+        Height="290"
+        CanResize="False"
+        x:Class="WorldMiner.Views.MainWindow"
+        Icon="/Assets/worldminer_icon.ico"
+        Title="WorldMiner">
+
+    <Design.DataContext>
+        <viewModels:MainWindowViewModel/>
+    </Design.DataContext>
+
+    <StackPanel Orientation="Vertical" Margin="5">
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBox Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"
+               UseFloatingWatermark="True" wpf:TextFieldAssist.Label="World Path"
+               Text="{Binding WorldPath}" IsEnabled="{Binding !IsMining}"/>
+      <Button Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+              Height="30" Width="80" Content="Browse" Command="{Binding BrowseWorldPath}"/>
+      <TextBlock Grid.Row="1" Foreground="Red" MinHeight="18" FontStyle="Italic" Grid.Column="0" Text="{Binding WorldValidationMessage}"/>
+      
+      <TextBox Grid.Row="2" Grid.Column="0" Margin="0,0,10,0"
+               UseFloatingWatermark="True" wpf:TextFieldAssist.Label="Output Path"
+               Text="{Binding OutputPath}" IsEnabled="{Binding !IsMining}"/>
+      <Button Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"
+              Height="30" Width="80" Content="Browse" Command="{Binding BrowseOutputPath}"/>
+      <TextBlock Grid.Row="3" Foreground="Red" MinHeight="18" FontStyle="Italic" Grid.Column="0"  Text="{Binding OutputValidationMessage}"/>
+    </Grid>
+
+    <Grid Margin="0,35,0,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+      </Grid.RowDefinitions>
+      
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="auto"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="auto"/>
+      </Grid.ColumnDefinitions>
+      
+      <StackPanel Orientation="Horizontal">
+        <Button Height="30" Width="80" Content="Start" Command="{Binding Mine}" Margin="0,0,15,0"/>
+        <Button Height="30" Width="80" Content="Stop" Command="{Binding Stop}" Margin="0,0,15,0"/>
+        <Button Height="30" Width="80" Content="Cancel" Command="{Binding Cancel}"/>
+      </StackPanel>
+      
+      <TextBlock Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10,0,0,0"
+                 IsVisible="{Binding IsCancelling}"
+                 Text="Cancelling..." Foreground="Purple" FontStyle="Italic"/>
+    
+      <StackPanel Grid.Column="2" Orientation="Horizontal">
+        <TextBlock Text="Output format:" Margin="0,0,10,0" VerticalAlignment="Center"/>
+        <RadioButton Content="Human" IsChecked="{Binding IsHumanChecked}" GroupName="OutputFormat" Margin="0,0,8,0"/>
+        <RadioButton Content="JSON" IsChecked="{Binding IsJsonChecked}" GroupName="OutputFormat" Margin="0,0,15,0"/>
+      </StackPanel>
+    </Grid>
+    
+    <ProgressBar Margin="0,12,0,0" Minimum="0" Height="8"
+                 Value="{Binding WorldProgress.RegionsDone}" Maximum="{Binding WorldProgress.TotalRegions}"/>
+
+    <Grid Margin="0,10,0,0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="auto"/>
+        <RowDefinition Height="auto"/>
+      </Grid.RowDefinitions>
+
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="*"/>
+      </Grid.ColumnDefinitions>
+
+      <TextBlock Grid.Row="0" Grid.Column="0" FontWeight="Bold"
+                 Text="Regions" HorizontalAlignment="Center"/>
+      <TextBlock Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center">
+        <TextBlock.Text>
+          <MultiBinding StringFormat="{}{0} / {1}">
+            <Binding Path="WorldProgress.RegionsDone"/>
+            <Binding Path="WorldProgress.TotalRegions"/>
+          </MultiBinding>
+        </TextBlock.Text>
+      </TextBlock>
+      
+      <TextBlock Grid.Row="0" Grid.Column="1" FontWeight="Bold"
+                 Text="Chunks" HorizontalAlignment="Center"/>
+      <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding WorldProgress.ChunksDone}" HorizontalAlignment="Center"/>
+
+      <TextBlock Grid.Row="0" Grid.Column="2" FontWeight="Bold"
+                 Text="Books" HorizontalAlignment="Center"/>
+      <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding WorldProgress.BooksFound}" HorizontalAlignment="Center"/>
+
+      <TextBlock Grid.Row="0" Grid.Column="3" FontWeight="Bold"
+                 Text="Signs" HorizontalAlignment="Center"/>
+      <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding WorldProgress.SignsFound}" HorizontalAlignment="Center"/>
+    </Grid>
+  </StackPanel>
+</Window>
